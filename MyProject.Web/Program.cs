@@ -11,12 +11,10 @@ using MyProject.Services.Implementations.Authentication;
 using MyProject.Services.Implementations.Desk;
 using MyProject.Services.Implementations.FavoriteDesk;
 using MyProject.Services.Implementations.Reservation;
-using MyProject.Services.Implementations;
 using MyProject.Services.Interfaces.Authentication;
 using MyProject.Services.Interfaces.Desk;
 using MyProject.Services.Interfaces.FavoriteDesk;
 using MyProject.Services.Interfaces.Reservation;
-using MyProject.Services.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
