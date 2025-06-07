@@ -19,7 +19,7 @@ namespace MyProject.Services.Implementations.FavoriteDesk
                 UserFavorites = userFavorites.Select(MapToFavoriteDeskInfo).ToList(),
                 TotalCount = userFavorites.Count
             };
-
+             
             return favoriteDesks;
         }
         public async Task<AddFavoriteResponse> AddToUserFavorites(AddFavoriteRequest request)
@@ -48,9 +48,10 @@ namespace MyProject.Services.Implementations.FavoriteDesk
                     ErrorMessage = "You can only have 3 favorite desks."
                 };
             }
-            if (checkIfExists.Any(f => f.DeskId == request.DeskId))
+            var existing = checkIfExists.FirstOrDefault(f => f.DeskId == request.DeskId);
+            if (existing != null)
             {
-                if (checkIfExists[request.DeskId].IsFavorite)
+                if (existing.IsFavorite)
                 {
                     return new AddFavoriteResponse
                     {
@@ -60,8 +61,8 @@ namespace MyProject.Services.Implementations.FavoriteDesk
                 }
                 else
                 {
-                    checkIfExists[request.DeskId].IsFavorite = true;
-                    await _favoriteDeskRepository.UpdateAsync(checkIfExists[request.DeskId].FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = true });
+                    existing.IsFavorite = true;
+                    await _favoriteDeskRepository.UpdateAsync(existing.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = true });
                     return new AddFavoriteResponse
                     {
                         Success = true,
@@ -91,6 +92,45 @@ namespace MyProject.Services.Implementations.FavoriteDesk
                 {
                     Success = false,
                     ErrorMessage = "Failed to add desk to favorites."
+                };
+            }
+        }
+        public async Task<RemoveFavoriteResponse> RemoveFromUserFavorites(RemoveFavoriteRequest request)
+        {
+            if (request.UserId <= 0 || request.DeskId <= 0)
+            {
+                return new RemoveFavoriteResponse
+                {
+                    Success = false,
+                    ErrorMessage = "Invalid UserId or DeskId."
+                };
+            }
+
+            var favoriteDesk = await _favoriteDeskRepository.RetrieveCollectionAsync(new FavoriteDeskFilter { UserId = request.UserId, DeskId = request.DeskId }).FirstOrDefaultAsync();
+            if (favoriteDesk == null || !favoriteDesk.IsFavorite)
+            {
+                return new RemoveFavoriteResponse
+                {
+                    Success = false,
+                    ErrorMessage = "This desk is not in your favorites."
+                };
+            }
+            if (favoriteDesk != null && favoriteDesk.IsFavorite)
+            {
+                favoriteDesk.IsFavorite = false;
+                await _favoriteDeskRepository.UpdateAsync(favoriteDesk.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = false });
+                return new RemoveFavoriteResponse
+                {
+                    Success = true,
+                    ErrorMessage = "Desk removed from favorites successfully."
+                };
+            }
+            else
+            {
+                return new RemoveFavoriteResponse
+                {
+                    Success = false,
+                    ErrorMessage = "Failed to remove desk from favorites."
                 };
             }
         }

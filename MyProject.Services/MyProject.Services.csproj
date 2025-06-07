@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Reservation\" />
     <Folder Include="DTOs\User\" />
-    <Folder Include="Implementations\Reservation\" />
     <Folder Include="Implementations\User\" />
-    <Folder Include="Interfaces\Reservation\" />
     <Folder Include="Interfaces\User\" />
   </ItemGroup>
 

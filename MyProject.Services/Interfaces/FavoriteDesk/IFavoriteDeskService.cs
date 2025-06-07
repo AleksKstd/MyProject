@@ -6,5 +6,6 @@ namespace MyProject.Services.Interfaces.FavoriteDesk
     {
         Task<GetAllFavoritesByUserIdResponse> GetAllUserFavoritesAsync(int userId);
         Task<AddFavoriteResponse> AddToUserFavorites(AddFavoriteRequest request);
+        Task<RemoveFavoriteResponse> RemoveFromUserFavorites(RemoveFavoriteRequest request);
     }
 }

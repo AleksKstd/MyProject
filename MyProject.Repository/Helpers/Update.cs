@@ -26,7 +26,7 @@ namespace MyProject.Repository.Helpers
         {
             if (fieldValue != null)
             {
-                setClauses.Add($"{fieldName} = @{fieldValue}");
+                setClauses.Add($"{fieldName} = @{fieldName}");
                 command.Parameters.AddWithValue($"@{fieldName}", fieldValue);
             }
         }
@@ -38,12 +38,12 @@ namespace MyProject.Repository.Helpers
                 throw new InvalidOperationException("No set clauses have been added.");
             }
 
-            command.CommandText += @$"SET {string.Join(", ", setClauses)} WHERE {idDbFieldName} = @{idDbFieldName}";
+            command.CommandText += @$" SET {string.Join(", ", setClauses)} WHERE {idDbFieldName} = @{idDbFieldName}";
 
             command.Parameters.AddWithValue($"@{idDbFieldName}", idDbFieldValue);
 
             SqlTransaction transaction = command.Connection.BeginTransaction();
-
+            command.Transaction = transaction;
             int rowsAffected = await command.ExecuteNonQueryAsync();
 
             if (rowsAffected != 1)

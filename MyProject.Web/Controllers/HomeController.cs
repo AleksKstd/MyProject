@@ -90,15 +90,28 @@ namespace MyProject.Web.Controllers
                 DeskId = deskId 
             });
 
-            if (result.Success)
+            if (!result.Success)
+                TempData["ErrorMessage"] = result.ErrorMessage;
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveFavoriteDesk(int deskId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Login", "Account");
             }
-            else
+            var result = await _favoriteDeskService.RemoveFromUserFavorites(new RemoveFavoriteRequest
             {
-                ModelState.AddModelError("", result.ErrorMessage);
-                return View("Index");
-            }
+                UserId = userId.Value,
+                DeskId = deskId
+            });
+            if (!result.Success)
+                TempData["ErrorMessage"] = result.ErrorMessage;
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

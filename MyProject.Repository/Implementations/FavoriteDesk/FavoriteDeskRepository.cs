@@ -61,6 +61,10 @@ namespace MyProject.Repository.Implementations.FavoriteDesk
             {
                 commandFilter.AddCondition("IsFavorite", filter.IsFavorite.Value);
             }
+            if (filter.DeskId is not null)
+            {
+                commandFilter.AddCondition("DeskId", filter.DeskId.Value);
+            }
 
             return base.RetrieveCollectionAsync(commandFilter);
         }

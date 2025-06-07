@@ -25,8 +25,17 @@ namespace MyProject.Services.Implementations.Desk
             {
                 throw new KeyNotFoundException($"Desk with ID {deskId} not found.");
             }
-            
-            return (GetDeskByIdResponse)MapToDeskInfo(desk);
+
+            return new GetDeskByIdResponse
+            {
+                DeskId = desk.DeskId,
+                Floor = desk.Floor,
+                Zone = desk.Zone,
+                HasMonitor = desk.HasMonitor,
+                HasDock = desk.HasDock,
+                HasWindow = desk.HasWindow,
+                HasPrinter = desk.HasPrinter
+            };
         }
         public async Task<GetAllDesksResponse> GetAllDesksAsync()
         {

@@ -9,6 +9,10 @@
             Logout
         </a>
     </div>
+    @if (TempData["ErrorMessage"] is string msg)
+    {
+        <div class="alert alert-danger">@msg</div>
+    }
 
     <h2>Favorite Desks</h2>
     <table class="table table-striped">
@@ -41,8 +45,8 @@
                            class="btn btn-sm btn-outline-success">
                             QuickReserve
                         </a>
-                        <a asp-action="RemoveFavorite"
-                           asp-route-id="@desk.DeskId"
+                        <a asp-action="RemoveFavoriteDesk"
+                           asp-route-deskId="@desk.DeskId"
                            class="btn btn-sm btn-outline-danger ms-2">
                             Remove
                         </a>
@@ -79,12 +83,12 @@
                     <td>@(desk.HasPrinter ? "Yes" : "No")</td>
                     <td class="text-end">
                         <a asp-action="Reserve"
-                           asp-route-id="@desk.DeskId"
+                           asp-route-deskId="@desk.DeskId"
                            class="btn btn-sm btn-outline-success">
                             Reserve
                         </a>
                         <a asp-action="AddFavoriteDesk"
-                           asp-route-id="@desk.DeskId"
+                           asp-route-deskId="@desk.DeskId"
                            class="btn btn-sm btn-outline-primary ms-2">
                             Favorite
                         </a>

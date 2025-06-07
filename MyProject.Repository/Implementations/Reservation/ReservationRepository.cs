@@ -62,6 +62,14 @@ namespace MyProject.Repository.Implementations.Reservation
             {
                 commandFilter.AddCondition("Date", filter.Date.Value);
             }
+            if (filter.IsActive is not null)
+            {
+                commandFilter.AddCondition("IsActive", filter.IsActive.Value);
+            }
+            if (filter.DeskId is not null)
+            {
+                commandFilter.AddCondition("DeskId", filter.DeskId.Value);
+            }
 
             return base.RetrieveCollectionAsync(commandFilter);
         }
