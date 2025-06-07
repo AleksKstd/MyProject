@@ -25,7 +25,6 @@
                 <td>@reservation.ReservationId</td>
                 <td>@reservation.DeskId</td>
                 <td>@reservation.Date.ToString("dd-MM-yyyy")</td>
-                <td>@reservation.Notes</td>
                 <td>
                     <span class="badge @(reservation.IsActive ? "bg-success" : "bg-secondary")">
                         @(reservation.IsActive ? "Upcoming" : "Past")

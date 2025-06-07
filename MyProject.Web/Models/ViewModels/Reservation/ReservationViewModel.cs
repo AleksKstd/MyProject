@@ -11,6 +11,5 @@ public class ReservationViewModel
     public int DeskId { get; set; }
     public DateTime Date { get; set; }
     public bool IsActive { get; set; }
-    public string? Notes { get; set; }
 }
 
