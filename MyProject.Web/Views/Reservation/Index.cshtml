@@ -1,4 +1,37 @@
-﻿@page
-@model MyProject.Web.Views.Reservation.IndexModel
+﻿@model UserReservationViewModel
 @{
+    ViewData["Title"] = "Reservations";
 }
+
+@if (TempData["ErrorMessage"] is string msg)
+{
+    <div class="alert alert-danger">@msg</div>
+}
+<h2>Your Reservations</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reservation ID</th>
+            <th>Desk ID</th>
+            <th>Date</th>
+            <th>Notes</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservation in Model.Reservations)
+        {
+            <tr>
+                <td>@reservation.ReservationId</td>
+                <td>@reservation.DeskId</td>
+                <td>@reservation.Date.ToString("dd-MM-yyyy")</td>
+                <td>@reservation.Notes</td>
+                <td>
+                    <span class="badge @(reservation.IsActive ? "bg-success" : "bg-secondary")">
+                        @(reservation.IsActive ? "Upcoming" : "Past")
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

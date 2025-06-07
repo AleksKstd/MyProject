@@ -1,0 +1,20 @@
+﻿@model ReservationViewModel
+@{
+    ViewData["Title"] = "Create Reservation";
+    var minDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
+    var maxDate = DateTime.UtcNow.AddDays(14).ToString("yyyy-MM-dd");
+}
+
+<h2>Reserve Desk @Model.DeskId</h2>
+
+<form asp-action="CreateReservation" method="post">
+    <input type="hidden" asp-for="DeskId" />
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label">Reservation Date</label>
+        <input asp-for="Date" class="form-control"
+               type="date" min="@minDate" max="@maxDate" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Reserve</button>
+</form>

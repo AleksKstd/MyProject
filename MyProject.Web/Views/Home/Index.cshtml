@@ -82,7 +82,8 @@
                     <td>@(desk.HasWindow ? "Yes" : "No")</td>
                     <td>@(desk.HasPrinter ? "Yes" : "No")</td>
                     <td class="text-end">
-                        <a asp-action="Reserve"
+                        <a asp-controller="Reservation"
+                           asp-action="CreateReservation"
                            asp-route-deskId="@desk.DeskId"
                            class="btn btn-sm btn-outline-success">
                             Reserve
