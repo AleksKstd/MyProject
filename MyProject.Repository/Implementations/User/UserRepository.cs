@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using MyProject.Repository.Base;
+using MyProject.Repository.Helpers;
 using MyProject.Repository.Interfaces.User;
 
 namespace MyProject.Repository.Implementations.User
@@ -34,29 +35,36 @@ namespace MyProject.Repository.Implementations.User
                 FullName = Convert.ToString(reader["FullName"])
             };
         }
-        public Task<int> CreateAsync(Models.User entity)
+        public async Task<int> CreateAsync(Models.User entity)
         {
-            throw new NotImplementedException();
+            return await base.CreateAsync(entity);
         }
 
-        public Task<bool> DeleteAsync(int objectId)
+        public async Task<bool> DeleteAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.DeleteAsync("UserId", objectId);
         }
 
-        public Task<Models.User> RetrieveAsync(int objectId)
+        public async Task<Models.User> RetrieveAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.RetrieveAsync("UserId", objectId);
         }
 
         public IAsyncEnumerable<Models.User> RetrieveCollectionAsync(UserFilter filter)
         {
-            throw new NotImplementedException();
+            Filter commandFilter = new Filter();
+
+            if (filter.Username is not null)
+            {
+                commandFilter.AddCondition("Username", filter.Username);
+            }
+
+            return base.RetrieveCollectionAsync(commandFilter);
         }
 
-        public Task<bool> UpdateAsync(int objectId, UserUpdate update)
+        public async Task<bool> UpdateAsync(int objectId, UserUpdate update)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Users cannot be updated.");
         }
     }
 }

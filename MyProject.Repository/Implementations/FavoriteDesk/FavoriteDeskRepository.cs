@@ -33,9 +33,9 @@ namespace MyProject.Repository.Implementations.FavoriteDesk
             };
         }
 
-        public Task<int> CreateAsync(Models.FavoriteDesk entity)
+        public override async Task<int> CreateAsync(Models.FavoriteDesk entity)
         {
-            throw new NotImplementedException();
+            
         }
 
         public Task<bool> DeleteAsync(int objectId)

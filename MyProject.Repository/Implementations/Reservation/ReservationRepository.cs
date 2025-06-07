@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using MyProject.Repository.Base;
+using MyProject.Repository.Helpers;
 using MyProject.Repository.Interfaces.Reservation;
 
 namespace MyProject.Repository.Implementations.Reservation
@@ -34,29 +35,49 @@ namespace MyProject.Repository.Implementations.Reservation
                 IsActive = Convert.ToBoolean(reader["IsActive"])
             };
         }
-        public Task<int> CreateAsync(Models.Reservation entity)
+        public async Task<int> CreateAsync(Models.Reservation entity)
         {
-            throw new NotImplementedException();
+            return await base.CreateAsync(entity);
         }
 
-        public Task<bool> DeleteAsync(int objectId)
+        public async Task<bool> DeleteAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.DeleteAsync("ReservationId", objectId);
         }
 
-        public Task<Models.Reservation> RetrieveAsync(int objectId)
+        public async Task<Models.Reservation> RetrieveAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.RetrieveAsync("ReservationId", objectId);
         }
 
         public IAsyncEnumerable<Models.Reservation> RetrieveCollectionAsync(ReservationFilter filter)
         {
-            throw new NotImplementedException();
+            Filter commandFilter = new Filter();
+
+            if (filter.UserId is not null)
+            {
+                commandFilter.AddCondition("UserId", filter.UserId.Value);
+            }
+            if (filter.Date is not null)
+            {
+                commandFilter.AddCondition("Date", filter.Date.Value);
+            }
+
+            return base.RetrieveCollectionAsync(commandFilter);
         }
 
-        public Task<bool> UpdateAsync(int objectId, ReservationUpdate update)
+        public async Task<bool> UpdateAsync(int objectId, ReservationUpdate update)
         {
-            throw new NotImplementedException();
+            using SqlConnection connaction = await ConnectionFactory.CreateConnectionAsync();
+
+            Update updateCommand = new Update(
+                connaction,
+                GetTableName(),
+                "ReservationId", objectId);
+
+            updateCommand.AddSetClause("IsActive", update.IsActive);
+
+            return await updateCommand.ExecuteNonQueryAsync() > 0;
         }
     }
 }

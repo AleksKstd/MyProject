@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using MyProject.Repository.Base;
+using MyProject.Repository.Helpers;
 using MyProject.Repository.Interfaces.Desk;
 
 namespace MyProject.Repository.Implementations.Desk
@@ -38,29 +39,52 @@ namespace MyProject.Repository.Implementations.Desk
                 HasPrinter = Convert.ToBoolean(reader["HasPrinter"])
             };
         }
-        public Task<int> CreateAsync(Models.Desk entity)
+        public async Task<int> CreateAsync(Models.Desk entity)
         {
-            throw new NotImplementedException();
+            return await base.CreateAsync(entity);
         }
 
-        public Task<bool> DeleteAsync(int objectId)
+        public async Task<bool> DeleteAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.DeleteAsync("DeskId", objectId);
         }
 
-        public Task<Models.Desk> RetrieveAsync(int objectId)
+        public async Task<Models.Desk> RetrieveAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.RetrieveAsync("DeskId", objectId);
         }
 
         public IAsyncEnumerable<Models.Desk> RetrieveCollectionAsync(DeskFilter filter)
         {
-            throw new NotImplementedException();
+            Filter commandFilter = new Filter();
+
+            if (filter.Floor is not null)
+            {
+                commandFilter.AddCondition("Floor", filter.Floor.Value);
+            }
+            if (filter.HasDock is not null)
+            {
+                commandFilter.AddCondition("HasDock", filter.HasDock);
+            }
+            if (filter.HasMonitor is not null)
+            {
+                commandFilter.AddCondition("HasMonitor", filter.HasMonitor);
+            }
+            if (filter.HasWindow is not null)
+            {
+                commandFilter.AddCondition("HasWindow", filter.HasWindow);
+            }
+            if (filter.HasPrinter is not null)
+            {
+                commandFilter.AddCondition("HasPrinter", filter.HasPrinter);
+            }
+
+            return base.RetrieveCollectionAsync(commandFilter);
         }
 
         public Task<bool> UpdateAsync(int objectId, DeskUpdate update)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Desks cannot be updated.");
         }
     }
 }

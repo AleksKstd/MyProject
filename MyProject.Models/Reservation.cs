@@ -13,7 +13,7 @@ namespace MyProject.Models
         public int DeskId { get; set; }
         [Required]
         [DataType(DataType.Date)]
-        public Date Date { get; set; }
+        public DateTime Date { get; set; }
         [Required]
         public bool IsActive { get; set; }
     }
