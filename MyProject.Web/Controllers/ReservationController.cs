@@ -83,38 +83,45 @@ public class ReservationController : Controller
     }
 
     [HttpGet]
-    public IActionResult CreateQuickReservation(int deskId)
+    public async Task<IActionResult> CreateQuickReservation(int deskId)
     {
         if (deskId <= 0)
         {
             TempData["ErrorMessage"] = "Invalid desk ID provided.";
             return RedirectToAction("Index", "Home");
         }
+
         var model = new ReservationViewModel
         {
             DeskId = deskId,
-            Date = DateTime.UtcNow
+            Date = DateTime.UtcNow.Date
         };
-        return RedirectToAction("CreateQuickReservation", "Reservation");
+
+        return await CreateQuickReservation(model);
     }
+
     [HttpPost]
     public async Task<IActionResult> CreateQuickReservation(ReservationViewModel model)
     {
         if (!ModelState.IsValid)
-            return View(model);
+            return RedirectToAction("Index", "Home");
+
         var request = new CreateReservationRequest
         {
             DeskId = model.DeskId,
             UserId = HttpContext.Session.GetInt32("UserId").GetValueOrDefault(),
-            Date = DateTime.UtcNow.AddDays(1),
+            Date = model.Date.AddDays(1),
             IsActive = true
         };
+
         var response = await _reservationService.CreateReservation(request);
+
         if (!response.Success)
         {
             TempData["ErrorMessage"] = response.ErrorMessage;
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
+
         return RedirectToAction("Index", "Home");
     }
 }

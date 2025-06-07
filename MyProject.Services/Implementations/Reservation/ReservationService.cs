@@ -32,9 +32,9 @@ namespace MyProject.Services.Implementations.Reservation
                 TotalCount = reservations.Count
             };
         }
-        public async Task<CreateReservationResponse> CreateReservation (CreateReservationRequest request)
+        public async Task<CreateReservationResponse> CreateReservation (CreateReservationRequest request)   
         {
-            if (request == null || request.UserId <= 0 || request.DeskId <= 0 || request.Date == default)
+            if (request == null || request.UserId <= 0 || request.DeskId <= 0 || request.Date.Date == default)
             {
                 return new CreateReservationResponse
                 {
@@ -42,7 +42,7 @@ namespace MyProject.Services.Implementations.Reservation
                     ErrorMessage = "Invalid reservation request."
                 };
             }
-            if(request.Date.Date < DateTime.UtcNow || request.Date.Date > DateTime.UtcNow.AddDays(14))
+            if(request.Date.Date < DateTime.UtcNow.Date || request.Date.Date > DateTime.UtcNow.Date.AddDays(14))
             {
                 return new CreateReservationResponse
                 {
@@ -99,7 +99,7 @@ namespace MyProject.Services.Implementations.Reservation
             var allReservations = await _reservationRepository.RetrieveCollectionAsync(new ReservationFilter()).ToListAsync();
             foreach (var reservation in allReservations)
             {
-                if (reservation.Date < DateTime.UtcNow)
+                if (reservation.Date < DateTime.UtcNow.Date)
                 {
                     reservation.IsActive = false;
                     await _reservationRepository.UpdateAsync(reservation.ReservationId, new ReservationUpdate { IsActive = reservation.IsActive });
