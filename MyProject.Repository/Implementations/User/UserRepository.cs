@@ -10,11 +10,11 @@ namespace MyProject.Repository.Implementations.User
         {
             return new[]
             {
-                "Rename",
-                "Rename",
-                "Rename",
-                "Rename",
-                "Rename"
+                "UserId",
+                "Username",
+                "Password",
+                "Email",
+                "FullName"
             };
         }
 
@@ -27,13 +27,11 @@ namespace MyProject.Repository.Implementations.User
         {
             return new Models.User
             {
-                Rename = Convert.ToInt32(reader["Rename"]),
-                Rename = Convert.ToInt32(reader["Rename"]),
-                Rename = Convert.ToDateTime(reader["Rename"]),
-                Rename = Convert.ToDateTime(reader["Rename"]),
-                Rename = Convert.ToString(reader["Rename"]),
-                Rename = Convert.ToInt32(reader["Rename"]),
-                Rename = Convert.ToBoolean(reader["Rename"])
+                UserId = Convert.ToInt32(reader["UserId"]),
+                Username = Convert.ToString(reader["Username"]),
+                Password = Convert.ToString(reader["Password"]),
+                Email = Convert.ToString(reader["Email"]),
+                FullName = Convert.ToString(reader["FullName"])
             };
         }
         public Task<int> CreateAsync(Models.User entity)
