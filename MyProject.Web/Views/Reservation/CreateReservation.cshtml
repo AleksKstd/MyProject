@@ -1,10 +1,14 @@
 ﻿@model ReservationViewModel
 @{
     ViewData["Title"] = "Create Reservation";
-    var minDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
+    var minDate = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd");
     var maxDate = DateTime.UtcNow.AddDays(14).ToString("yyyy-MM-dd");
 }
 
+@if (TempData["ErrorMessage"] is string msg)
+{
+    <div class="alert alert-danger">@msg</div>
+}
 <h2>Reserve Desk @Model.DeskId</h2>
 
 <form asp-action="CreateReservation" method="post">

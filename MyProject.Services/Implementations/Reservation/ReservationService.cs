@@ -14,6 +14,7 @@ namespace MyProject.Services.Implementations.Reservation
         }
         public async Task<GetAllReservationsForUserResponse> GetAllUserReservations(int userId)
         {
+            await UpdateAllReservationsStatus();
             if (userId <= 0)
             {
                 return new GetAllReservationsForUserResponse
@@ -23,6 +24,7 @@ namespace MyProject.Services.Implementations.Reservation
                 };
             }
             var reservations = await _reservationRepository.RetrieveCollectionAsync(new ReservationFilter { UserId = userId }).ToListAsync();
+            reservations.OrderByDescending(a => a.IsActive);
 
             return new GetAllReservationsForUserResponse
             {
@@ -91,6 +93,18 @@ namespace MyProject.Services.Implementations.Reservation
             {
                 Success = true
             };
+        }
+        private async Task UpdateAllReservationsStatus()
+        {
+            var allReservations = await _reservationRepository.RetrieveCollectionAsync(new ReservationFilter()).ToListAsync();
+            foreach (var reservation in allReservations)
+            {
+                if (reservation.Date < DateTime.UtcNow)
+                {
+                    reservation.IsActive = false;
+                    await _reservationRepository.UpdateAsync(reservation.ReservationId, new ReservationUpdate { IsActive = reservation.IsActive });
+                }
+            }
         }
         private ReservationInfo MapToReservationInfo(Models.Reservation reservation)
         {

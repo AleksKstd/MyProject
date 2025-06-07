@@ -24,7 +24,6 @@ namespace MyProject.Web.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            TempData["ErrorMessage"] = null;
 
             var allDesksFromService = await _deskService.GetAllDesksAsync();
             var favoriteDeskIds = await _favoriteDeskService.GetAllUserFavoritesAsync(HttpContext.Session.GetInt32("UserId").Value);

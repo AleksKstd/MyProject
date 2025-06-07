@@ -40,8 +40,9 @@
                     <td>@(desk.HasWindow ? "Yes" : "No")</td>
                     <td>@(desk.HasPrinter ? "Yes" : "No")</td>
                     <td class="text-end">
-                        <a asp-action="QuickReserve"
-                           asp-route-id="@desk.DeskId"
+                        <a asp-controller="Reservation"
+                           asp-action="CreateQuickReservation"
+                           asp-route-deskId="@desk.DeskId"
                            class="btn btn-sm btn-outline-success">
                             QuickReserve
                         </a>

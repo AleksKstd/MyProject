@@ -62,7 +62,7 @@ namespace MyProject.Services.Implementations.FavoriteDesk
                 else
                 {
                     existing.IsFavorite = true;
-                    await _favoriteDeskRepository.UpdateAsync(existing.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = true });
+                    await _favoriteDeskRepository.UpdateAsync(existing.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = existing.IsFavorite });
                     return new AddFavoriteResponse
                     {
                         Success = true,
@@ -118,7 +118,7 @@ namespace MyProject.Services.Implementations.FavoriteDesk
             if (favoriteDesk != null && favoriteDesk.IsFavorite)
             {
                 favoriteDesk.IsFavorite = false;
-                await _favoriteDeskRepository.UpdateAsync(favoriteDesk.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = false });
+                await _favoriteDeskRepository.UpdateAsync(favoriteDesk.FavoriteDeskId, new FavoriteDeskUpdate { IsFavorite = favoriteDesk.IsFavorite });
                 return new RemoveFavoriteResponse
                 {
                     Success = true,
