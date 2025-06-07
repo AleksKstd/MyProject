@@ -37,7 +37,7 @@ namespace MyProject.Repository.Implementations.User
         }
         public async Task<int> CreateAsync(Models.User entity)
         {
-            return await base.CreateAsync(entity);
+            return await base.CreateAsync(entity, "UserId");
         }
 
         public async Task<bool> DeleteAsync(int objectId)

@@ -1,6 +1,7 @@
 ﻿using MyProject.Repository.Base;
 using MyProject.Repository.Interfaces.FavoriteDesk;
 using Microsoft.Data.SqlClient;
+using MyProject.Repository.Helpers;
 
 namespace MyProject.Repository.Implementations.FavoriteDesk
 {
@@ -33,29 +34,50 @@ namespace MyProject.Repository.Implementations.FavoriteDesk
             };
         }
 
-        public override async Task<int> CreateAsync(Models.FavoriteDesk entity)
+        public async Task<int> CreateAsync(Models.FavoriteDesk entity)
         {
-            
+            return await base.CreateAsync(entity, "FavoriteDeskId");
         }
 
-        public Task<bool> DeleteAsync(int objectId)
+        public async Task<bool> DeleteAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.DeleteAsync("FavoriteDeskId", objectId);
         }
 
-        public Task<Models.FavoriteDesk> RetrieveAsync(int objectId)
+        public async Task<Models.FavoriteDesk> RetrieveAsync(int objectId)
         {
-            throw new NotImplementedException();
+            return await base.RetrieveAsync("FavoriteDeskId", objectId);
         }
 
         public IAsyncEnumerable<Models.FavoriteDesk> RetrieveCollectionAsync(FavoriteDeskFilter filter)
         {
-            throw new NotImplementedException();
+            Filter commandFilter = new Filter();
+
+            if (filter.UserId is not null)
+            {
+                commandFilter.AddCondition("UserId", filter.UserId.Value);
+            }
+            if (filter.IsFavorite is not null)
+            {
+                commandFilter.AddCondition("IsFavorite", filter.IsFavorite.Value);
+            }
+
+            return base.RetrieveCollectionAsync(commandFilter);
         }
 
-        public Task<bool> UpdateAsync(int objectId, FavoriteDeskUpdate update)
+        public async Task<bool> UpdateAsync(int objectId, FavoriteDeskUpdate update)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = await ConnectionFactory.CreateConnectionAsync();
+
+            Update updateCommand = new Update(
+                connection,
+                GetTableName(),
+                "FavoriteDeskId",
+                objectId);
+
+            updateCommand.AddSetClause("IsActive", update.IsActive);
+
+            return await updateCommand.ExecuteNonQueryAsync() > 0;
         }
     }
 }

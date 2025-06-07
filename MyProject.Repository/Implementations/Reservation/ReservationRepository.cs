@@ -37,7 +37,7 @@ namespace MyProject.Repository.Implementations.Reservation
         }
         public async Task<int> CreateAsync(Models.Reservation entity)
         {
-            return await base.CreateAsync(entity);
+            return await base.CreateAsync(entity, "ReservationId");
         }
 
         public async Task<bool> DeleteAsync(int objectId)

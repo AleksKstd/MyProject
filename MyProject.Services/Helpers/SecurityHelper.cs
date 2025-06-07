@@ -3,6 +3,7 @@ using System.Text;
 
 namespace MyProject.Services.Helpers
 {
+    // deff pass is - pass123
     public static class SecurityHelper
     {
         public static string HashPassword(string password)

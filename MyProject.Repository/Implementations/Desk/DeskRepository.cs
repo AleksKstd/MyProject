@@ -41,7 +41,7 @@ namespace MyProject.Repository.Implementations.Desk
         }
         public async Task<int> CreateAsync(Models.Desk entity)
         {
-            return await base.CreateAsync(entity);
+            return await base.CreateAsync(entity, "DeskId");
         }
 
         public async Task<bool> DeleteAsync(int objectId)

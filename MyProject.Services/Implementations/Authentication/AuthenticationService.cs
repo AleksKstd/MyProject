@@ -9,6 +9,12 @@ namespace MyProject.Services.Implementations.Authentication
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
+
+        public AuthenticationService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
@@ -38,8 +44,9 @@ namespace MyProject.Services.Implementations.Authentication
             return new LoginResponse
             {
                 Success = true,
+                UserId = user.UserId,
                 Username = user.Username,
-                Name = user.Name
+                Name = user.FullName
             };
         }
     }
