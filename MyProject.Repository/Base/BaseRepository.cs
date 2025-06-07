@@ -74,7 +74,7 @@ namespace MyProject.Repository.Base
 
             foreach (var condition in filter.Conditions)
             {
-                sqlCommand.CommandText += $" AND {condition.Key} = @{condition.Key};";
+                sqlCommand.CommandText += $" AND {condition.Key} = @{condition.Key}";
                 sqlCommand.Parameters.AddWithValue($"@{condition.Key}", condition.Value);
             }
             using SqlDataReader reader = await sqlCommand.ExecuteReaderAsync();

@@ -5,7 +5,6 @@ namespace MyProject.Models
 {
     public class Reservation
     {
-        [Required]
         public int ReservationId { get; set; }
         [Required]
         public int UserId { get; set; }

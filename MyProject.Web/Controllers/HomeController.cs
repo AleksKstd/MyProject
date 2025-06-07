@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyProject.Services.Interfaces.Desk;
 using MyProject.Services.Interfaces.FavoriteDesk;
 using MyProject.Web.Models;
+using MyProject.Services.DTOs.FavoriteDesk;
 
 namespace MyProject.Web.Controllers
 {
@@ -30,7 +31,7 @@ namespace MyProject.Web.Controllers
             var allDesks = new List<DeskViewModel>();
             var favoriteDesks = new List<DeskViewModel>();
 
-            if (favoriteDeskIds.TotalCount == 0)
+            if (favoriteDeskIds.TotalCount > 0)
             {
                 foreach (var favoriteInstance in favoriteDeskIds.UserFavorites)
                 {
@@ -54,7 +55,7 @@ namespace MyProject.Web.Controllers
             {
                 if (deskFromService != null)
                 {
-                    favoriteDesks.Add(new DeskViewModel
+                    allDesks.Add(new DeskViewModel
                     {
                         DeskId = deskFromService.DeskId,
                         Floor = deskFromService.Floor,
@@ -74,6 +75,30 @@ namespace MyProject.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddFavoriteDesk(int deskId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var result = await _favoriteDeskService.AddToUserFavorites(new AddFavoriteRequest{
+                UserId = userId.Value, 
+                DeskId = deskId 
+            });
+
+            if (result.Success)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", result.ErrorMessage);
+                return View("Index");
+            }
         }
 
         public IActionResult Privacy()

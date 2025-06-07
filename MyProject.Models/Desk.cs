@@ -4,7 +4,6 @@ namespace MyProject.Models
 {
     public class Desk
     {
-        [Required]
         public int DeskId { get; set; }
         [Required]
         public int Floor { get; set; }

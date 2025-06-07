@@ -3,7 +3,94 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-primary">
+            Logout
+        </a>
+    </div>
+
+    <h2>Favorite Desks</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Desk ID</th>
+                <th>Floor</th>
+                <th>Zone</th>
+                <th>Monitor</th>
+                <th>Dock</th>
+                <th>Window</th>
+                <th>Printer</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var desk in Model.FavoriteDesks)
+            {
+                <tr>
+                    <td>@desk.DeskId</td>
+                    <td>@desk.Floor</td>
+                    <td>@desk.Zone</td>
+                    <td>@(desk.HasMonitor ? "Yes" : "No")</td>
+                    <td>@(desk.HasDock ? "Yes" : "No")</td>
+                    <td>@(desk.HasWindow ? "Yes" : "No")</td>
+                    <td>@(desk.HasPrinter ? "Yes" : "No")</td>
+                    <td class="text-end">
+                        <a asp-action="QuickReserve"
+                           asp-route-id="@desk.DeskId"
+                           class="btn btn-sm btn-outline-success">
+                            QuickReserve
+                        </a>
+                        <a asp-action="RemoveFavorite"
+                           asp-route-id="@desk.DeskId"
+                           class="btn btn-sm btn-outline-danger ms-2">
+                            Remove
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h2>All Desks</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Desk ID</th>
+                <th>Floor</th>
+                <th>Zone</th>
+                <th>Monitor</th>
+                <th>Dock</th>
+                <th>Window</th>
+                <th>Printer</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var desk in Model.AllDesks)
+            {
+                <tr>
+                    <td>@desk.DeskId</td>
+                    <td>@desk.Floor</td>
+                    <td>@desk.Zone</td>
+                    <td>@(desk.HasMonitor ? "Yes" : "No")</td>
+                    <td>@(desk.HasDock ? "Yes" : "No")</td>
+                    <td>@(desk.HasWindow ? "Yes" : "No")</td>
+                    <td>@(desk.HasPrinter ? "Yes" : "No")</td>
+                    <td class="text-end">
+                        <a asp-action="Reserve"
+                           asp-route-id="@desk.DeskId"
+                           class="btn btn-sm btn-outline-success">
+                            Reserve
+                        </a>
+                        <a asp-action="AddFavoriteDesk"
+                           asp-route-id="@desk.DeskId"
+                           class="btn btn-sm btn-outline-primary ms-2">
+                            Favorite
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

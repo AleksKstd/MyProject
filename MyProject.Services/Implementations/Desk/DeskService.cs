@@ -14,13 +14,18 @@ namespace MyProject.Services.Implementations.Desk
 
         public async Task<GetDeskByIdResponse> GetDeskByIdAsync(int deskId)
         {
+            if (deskId <= 0)
+            {
+                throw new ArgumentException("Desk ID must be a positive number.");
+            }
+
             var desk = await _deskRepository.RetrieveAsync(deskId);
 
             if (desk == null)
             {
                 throw new KeyNotFoundException($"Desk with ID {deskId} not found.");
             }
-
+            
             return (GetDeskByIdResponse)MapToDeskInfo(desk);
         }
         public async Task<GetAllDesksResponse> GetAllDesksAsync()
@@ -28,7 +33,7 @@ namespace MyProject.Services.Implementations.Desk
             var desks = await _deskRepository.RetrieveCollectionAsync(new DeskFilter()).ToListAsync();
             var allDesks = new GetAllDesksResponse
             {
-                Desks = desks.Select(d => MapToDeskInfo(d)).ToList(),
+                Desks = desks.Select(MapToDeskInfo).ToList(),
                 TotalCount = desks.Count
             };
             

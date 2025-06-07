@@ -75,7 +75,7 @@ namespace MyProject.Repository.Implementations.FavoriteDesk
                 "FavoriteDeskId",
                 objectId);
 
-            updateCommand.AddSetClause("IsActive", update.IsActive);
+            updateCommand.AddSetClause("IsFavorite", update.IsFavorite);
 
             return await updateCommand.ExecuteNonQueryAsync() > 0;
         }

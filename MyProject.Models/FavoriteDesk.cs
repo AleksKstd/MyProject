@@ -4,7 +4,6 @@ namespace MyProject.Models
 {
     public class FavoriteDesk
     {
-        [Required]
         public int FavoriteDeskId { get; set; }
         [Required]
         public int UserId { get; set; }

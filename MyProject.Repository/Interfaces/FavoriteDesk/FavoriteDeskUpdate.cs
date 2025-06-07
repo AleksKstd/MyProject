@@ -4,6 +4,6 @@ namespace MyProject.Repository.Interfaces.FavoriteDesk
 {
     public class FavoriteDeskUpdate
     {
-        public SqlBoolean? IsActive { get; set; }
+        public SqlBoolean? IsFavorite { get; set; }
     }
 }

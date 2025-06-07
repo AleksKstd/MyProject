@@ -8,13 +8,13 @@ using MyProject.Repository.Implementations.Desk;
 using MyProject.Repository.Implementations.FavoriteDesk;
 using MyProject.Repository.Implementations.Reservation;
 using MyProject.Services.Implementations.Authentication;
-using MyProject.Services.Implementations;
-using MyProject.Services.Implementations;
+using MyProject.Services.Implementations.Desk;
+using MyProject.Services.Implementations.FavoriteDesk;
 using MyProject.Services.Implementations;
 using MyProject.Services.Implementations;
 using MyProject.Services.Interfaces.Authentication;
-using MyProject.Services.Interfaces;
-using MyProject.Services.Interfaces;
+using MyProject.Services.Interfaces.Desk;
+using MyProject.Services.Interfaces.FavoriteDesk;
 using MyProject.Services.Interfaces;
 using MyProject.Services.Interfaces;
 
@@ -29,6 +29,8 @@ builder.Services.AddScoped<IFavoriteDeskRepository, FavoriteDeskRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IDeskService, DeskService>();
+builder.Services.AddScoped<IFavoriteDeskService, FavoriteDeskService>();
 
 
 ConnectionFactory.SetConnectionString(

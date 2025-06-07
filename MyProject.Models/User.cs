@@ -4,7 +4,6 @@ namespace MyProject.Models
 {
     public class User
     {
-        [Required]
         public int UserId { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "Username can't be longer than 50.")]
